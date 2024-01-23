@@ -4,88 +4,44 @@
     <div id = "root"></div>
 </body>
 <!--react 사용을 위한 import문-->
-<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
 <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
 
 <!--JSX 변환 스크립트-->
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<script type="text/babel">
-    
-    function MinutesToHours(){
-        //변경이 생기면 상태 최신화
-        const [amount, setAmount] = React.useState(0);
+<!--prop type이 뭔지 알려줌-->
+<script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+<script src="text/babel">
 
-        //just true or false
-        const [inverted, setInverted] = React.useState(false);
-        const onChange = (event) => {
-            setAmount(event.target.value);
-        };
-        const reset = () => setAmount(0);
+    //prop을 인자로 받아 해당 인자를 value값으로 넣음 
+    //fontSize 부분을 보면 default 값을 맥일 수 있음
+    function Btn({text, fontSize = 16}) {
+        return <button 
+            style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+            fontSize,
 
-        //최근 값의 반대로 if true? -> false로 
-        const onInvert = () => {
-            reset();
-            setInverted(current => ! current);
-
-        }
-        return (
-            <div>
-                <div>
-                    <label htmlFor="minutes">Minutes</label>
-                    <input 
-                        // ?는 만약 flipped이아니라면 두번째 적용 맞다면 첫번째 적용
-                        value={inverted ? amount * 60 : amount}
-                        id="minutes" 
-                        placeholder ="Minutes" 
-                        type="number" 
-                        //input이 생기면 onchange 실행
-                        onChange={onChange}
-
-                        //false이면 minute은 disabled
-                        disabled={inverted === true}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="hours">Hours</label>
-                    <input 
-                        // ?는 만약 flipped이아니라면 두번째 적용 맞다면 첫번째 적용
-                        value={inverted ? amount : Math.round(amount/60)} 
-                        id="hours"
-                        placeholder ="Hours"
-                        type="number"
-
-                        //true이면 hour은 disabled
-                        disabled={inverted === false}
-                        onChange={onChange}
-                    />     
-                    
-                </div>
-                <button onClick={reset}>Reset</button>
-                <button onClick={onInvert}>{inverted ? "Turn back" : "Invert"}</button>
-            </div>
-        );
-    } 
-    function KmToMiles() {
-        return <h3>KM 2 M</h3>
+        
+        }}>{text}</button>
     }
+    
+  
+    
+    Btn.propTypes = {
+        //반드시 string으로 받아야함
+        text: PropTypes.string.isRequired,
+        fontSize: PropTypes.number,
+    }
+    //rendering
     function App(){
-        const [index, setIndex] = React.useState("0")
-        const onSelect = (event) => {
-            setIndex(event.target.value);
-        }
         return (
-            <div>
-                <h1>super Converter</h1>
-                <select value={index} onChange={onSelect}>
-                    <option value="0">Minutes & Hours</option>
-                    <option value="1">Km & Miles</option>
-                </select>
-
-                
-                {index === "0" ? <MinutesToHours/> : null}
-                {index === "1" ? <KmToMiles/> : null}
-
-                
+            <div>           
+                <Btn text="Save Changes" fontSize={18} />
+                <Btn text={"Continue"} />
             </div>
         );
     } 
